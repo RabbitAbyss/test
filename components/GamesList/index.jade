@@ -1,0 +1,8 @@
+index:
+
+	h5 Games list:
+
+	ul
+		each #root._page.games as #game
+			li 
+				a(href='/game/{{#game.id}}') {{#game.gameName}}

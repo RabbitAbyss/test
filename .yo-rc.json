@@ -1,0 +1,9 @@
+{
+  "generator-derby": {
+    "project": "sh",
+    "apps": [
+      "app"
+    ],
+    "coffee": true
+  }
+}

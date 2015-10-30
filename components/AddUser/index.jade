@@ -1,0 +1,10 @@
+index:
+    h4 Hello, {{#root.users[#root._session.userId].userName}}
+    
+    p Username:
+    input(type='text', value = '{{userName}}')
+    input(type='checkbox', checked = '{{Prof}}', on-change ='Professor()')
+    i professor : {{#root.users[#root._session.userId].professor}}
+    br
+    input(type='button', on-click = 'setUserName()' value= 'save')
+    input(type= 'button', on-click = 'KillAll()', value= 'Kik users')
