@@ -1,8 +1,14 @@
 index:
 
-	h5 Games list:
-
-	ul
-		each #root._page.games as #game
-			li 
-				a(href='/game/{{#game.id}}') {{#game.gameName}}
+	div.Gamelist
+		i ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		ul.Gamelist-list
+			p
+				i
+					b Games list:
+			each #root._page.games as #game
+				li 
+					a.Gamelist-link(href='/game/{{#game.id}}') 
+						i{{#game.gameName}}
+				p * * * *
+		i ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

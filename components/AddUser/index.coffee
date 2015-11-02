@@ -1,27 +1,31 @@
 module.exports = class AddUsers
 
 	view: __dirname
+	style:  __dirname 
 
 	init: ->
 		@model.ref 'userId', @model.scope '_session.userId'
 		@userId = @model.get 'userId'
+		@model.ref 'users', @model.scope 'users'
 
 	KillAll: ->
-		for key of @model.root.get 'users'
-			@model.root.del "users.#{key}"
+		for key of @model.get 'users'
+			@model.del "users.#{key}"
 
 	setUserName: ->
 		userName = @model.get 'userName'
-		console.log @userId
+		
 		if userName?
 			userName = userName.trim()
+		
 		if userName
-			@model.root.set "users.#{ @userId }.userName", userName
-			@model.root.set "users.#{ @userId }.professor", false
+			@model.set "users.#{ @userId }",
+				userName: userName,
+				professor: false,
 			@model.del 'userName'
 		else
 			alert 'Name cannot be empty!'
 
 	Professor: ->
 		Prof = @model.get 'Prof'
-		@model.root.set "users.#{ @userId }.professor", Prof
+		@model.set "users.#{ @userId }.professor", Prof

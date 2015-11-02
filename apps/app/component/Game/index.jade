@@ -1,3 +1,15 @@
 index:
 
-	view(name='StartGame')
+	header
+		i
+			b Shrimp Game
+	.hello
+		i
+			b {{#root.games[#root._page.gameId].gameName}} | Cost per round: {{#root.games[#root._page.gameId].costPerRound}}	
+
+	div.body-game
+		view(name='StartGame')
+
+	footer
+		p 
+			i ~ RabbitAbyss(c) | rabbitabyss@gmail.com ~
