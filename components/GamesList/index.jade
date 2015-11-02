@@ -6,7 +6,7 @@ index:
 			p
 				i
 					b Games list:
-			each #root._page.games as #game
+			each games as #game
 				li 
 					a.Gamelist-link(href='/game/{{#game.id}}') 
 						i{{#game.gameName}}

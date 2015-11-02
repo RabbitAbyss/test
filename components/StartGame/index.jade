@@ -3,42 +3,42 @@ index:
 		ul
 			i
 				b Players in the game:
-				each #root._page.game.userIds as #userId
-					if #root.users[#userId].professor == false
+				each game.userIds as #userId
+					if users[#userId].professor == false
 						li 
-							i {{#root.users[#userId].userName}}
+							i {{users[#userId].userName}}
 	div.input					
-		if (#root._page.game.userIds.length >= 2) && (#root.games[#root._page.gameId].round == 0)
+		if (Object.keys(players).length >= 2) && (games[gameId].round == 0)
 			input(type='button', on-click = 'startGame()' value= 'START')
 	
-		if 	#root.games[#root._page.gameId].round > 0
+		if 	games[gameId].round > 0
 		
-			if #root._page.playerQ[(#root.games[#root._page.gameId].round)-1] == null
-				if (#root._page.game.round < 3) && (#root._page.user.professor == false)
+			if playerQ[(games[gameId].round)-1] == null
+				if (game.round < 3) && (users[userId].professor == false)
 					p 
 						i 
 							b Input You Quantity:
-					input(type= 'number' value= '{{inQuantity}}')
+					input.input-quantIn(type= 'number' value= '{{inQuantity}}')
 					input(type= 'button' on-click= 'addQ()', value= 'add my (Q)')
-				if (#root._page.game.round == 3)
+				if (game.round == 3)
 					i
 						b
-							a.input-link(href='/end/{{#root._page.gameId}}') End Game
+							a.input-link(href='/end/{{gameId}}') End Game
 		
 			div.table
 				table
-					each #root._page.game.userIds as #userId
-						if #root.users[#userId].professor == false
+					each game.userIds as #userId
+						if users[#userId].professor == false
 							tr
 								td 
 									i
-										b (Q) {{#root.users[#userId].userName}}:
-								each #root.players[#userId].quant as #Q, #index
-									if #root._page.user.professor == true
+										b (Q) {{users[#userId].userName}}:
+								each players[#userId].quant as #Q, #index
+									if users[userId].professor == true
 										td 
 											i
 												b{{#Q}}
-									if (#index < (#root._page.game.round)-1) && (#root._page.user.professor == false)
+									if (#index < (game.round)-1) && (users[userId].professor == false)
 										td 
 											i
 												b{{#Q}}
@@ -46,28 +46,28 @@ index:
 						td 
 							i
 								b Price:
-						each #root._page.game.priceInRound as #P
+						each game.priceInRound as #P
 							td 
 								i
 									b{{#P}}		
 
-					each #root._page.game.userIds as #userId
-						if #root.users[#userId].professor == false	
+					each game.userIds as #userId
+						if users[#userId].professor == false	
 							tr
 								td
 									i
-										b (P) {{#root.users[#userId].userName}}:
-								each #root._page.players[#userId].profit as #Profit
+										b (P) {{users[#userId].userName}}:
+								each game.players[#userId].profit as #Profit
 									td {{#Profit}}
-								if #root._page.game.round  == 3
+								if game.round  == 3
 									td 
 										i
-											b {{#root._page.game.players[#userId].totalProfit}}
+											b {{game.players[#userId].totalProfit}}
 
-			if #root._page.game.round  == 3
+			if game.round  == 3
 				h4 
 					i
-						b!WINNER! {{#root._page.game.winner.name}}: {{#root._page.game.winner.profit}} !WINNER!
+						b!WINNER! {{game.winner.name}}: {{game.winner.profit}} !WINNER!
 
 
 

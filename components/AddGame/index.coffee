@@ -9,6 +9,7 @@ module.exports = class AddGame
 		@model.ref 'game', @model.scope "games.#{@userId}"
 		@model.ref 'games', @model.scope 'games'
 		@model.ref 'players', @model.scope 'players'
+		
 	addNewGame: ->
 		gameName = @model.get 'gameName'
 		
@@ -19,7 +20,6 @@ module.exports = class AddGame
 			@model.set "game",
 				gameName:gameName,
 				players: {},
-				professors: {},
 				userIds: [],
 				costPerRound: 5,
 				maxRounds: 8,

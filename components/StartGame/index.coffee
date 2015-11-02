@@ -3,13 +3,15 @@ module.exports = class StartGame
 	view: __dirname
 	style: __dirname
 	init: ->
-		@model.ref 'games', @model.scope 'games'
+		@model.ref 'userId', @model.scope '_session.userId'
+		@userId = @model.get 'userId'
 
+		@model.ref 'games', @model.scope 'games'
 		@model.ref 'players', @model.scope 'players'
 		@model.ref 'game', @model.scope '_page.game'
 		@model.ref 'gameId', @model.scope '_page.gameId'
 		@model.ref 'users', @model.scope 'users'
-		@model.ref 'playerQ', @model.scope '_page.playerQ' 
+		@model.ref 'playerQ', @model.scope "players.#{@userId}.quant" 
 
 	subRound:(players)->
 		@model.set 'game.winner.profit', 0

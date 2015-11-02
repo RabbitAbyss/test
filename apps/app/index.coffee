@@ -26,12 +26,11 @@ app.get '/', (page, model) ->
 		page.render 'MainPage'
 
 app.get '/end/:gameId', (page, model, params) ->
-	#end = model.get "games.#{params.gameId}.end"
-	#if end == false
-	#	gameName = model.get "games.#{params.gameId}.gameName"
-	#	model.set "games.#{params.gameId}",
-	#		gameName: gameName + ': (END)',
-	#		end: true	
+	end = model.get "games.#{params.gameId}.end"
+	if end == false
+		model.set "games.#{params.gameId}.end", true
+		gameName = model.get "games.#{params.gameId}.gameName"
+		model.set "games.#{params.gameId}.gameName", gameName + ': (END)'	
 	page.redirect '/'
 
 app.get '/game/:gameId', (page, model, params) ->
@@ -44,22 +43,15 @@ app.get '/game/:gameId', (page, model, params) ->
 
 		model.subscribe usersInGame, $players,  ->
 			model.set '_page.gameId', params.gameId
-			model.ref '_page.user', "users.#{userId}"
 			model.ref '_page.game', "games.#{params.gameId}"
-			model.ref '_page.professors', "games.#{params.gameId}.professors"
-			model.ref '_page.players', "games.#{params.gameId}.players"
-			model.ref '_page.player', "games.#{params.gameId}.players.#{userId}"
-			#model.ref '_page.playersQ', 'quant.' + params.gameId + '.players'
-			model.ref '_page.playerQ', "players.#{userId}.quant"
 
-			unless model.get '_page.player'
-				prof = model.get '_page.user.professor' 
+			unless model.get "games.#{params.gameId}.players.#{userId}"
+				prof = model.get "users.#{userId}.professor" 
 
 				if prof == false
-					model.add '_page.players', { id: userId, profit: [], totalProfit: 0  }
-					model.add 'players', {id: userId, gameId: params.gameId, quant:[]}
-					#model.add '_page.playersQ', { id: userId, Quantity: []  }			
-					model.push '_page.game.userIds', userId #refact
+					model.add "games.#{params.gameId}.players", { id: userId, profit: [], totalProfit: 0  }
+					model.add 'players', {id: userId, gameId: params.gameId, quant:[]}		
+					model.push '_page.game.userIds', userId
 				else
 					model.push '_page.game.userIds', userId
 				
