@@ -8,19 +8,19 @@ index:
 						li 
 							i {{users[#userId].userName}}
 	div.input					
-		if (Object.keys(players).length >= 2) && (games[gameId].round == 0)
+		if (Object.keys(players).length >= game.colPlayers) && (games[gameId].round == 0)
 			input(type='button', on-click = 'startGame()' value= 'START')
 	
 		if 	games[gameId].round > 0
 		
 			if playerQ[(games[gameId].round)-1] == null
-				if (game.round < 3) && (users[userId].professor == false)
+				if (game.round < (game.maxRounds + 1)) && (users[userId].professor == false)
 					p 
 						i 
 							b Input You Quantity:
 					input.input-quantIn(type= 'number' value= '{{inQuantity}}')
 					input(type= 'button' on-click= 'addQ()', value= 'add my (Q)')
-				if (game.round == 3)
+				if (game.round == (game.maxRounds + 1))
 					i
 						b
 							a.input-link(href='/end/{{gameId}}') End Game
@@ -59,12 +59,12 @@ index:
 										b (P) {{users[#userId].userName}}:
 								each game.players[#userId].profit as #Profit
 									td {{#Profit}}
-								if game.round  == 3
+								if game.round  == game.maxRounds + 1
 									td 
 										i
 											b {{game.players[#userId].totalProfit}}
 
-			if game.round  == 3
+			if game.round  == game.maxRounds + 1
 				h4 
 					i
 						b!WINNER! {{game.winner.name}}: {{game.winner.profit}} !WINNER!

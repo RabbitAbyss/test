@@ -17,43 +17,47 @@ app.component require './component/Game'
 app.loadViews __dirname + '/views'
 app.loadStyles __dirname + '/styles'
 
-app.get '/', (page, model) ->
+baseController = {}
+baseController.homePage= (page, model) ->
 	userId = model.get '_session.userId'
 	model.subscribe 'games', 'users', 'players', ->
-
 		model.at('games').filter().ref '_page.games'
 		model.at('users').filter().ref '_page.users'
+		console.log baseController
 		page.render 'MainPage'
 
-app.get '/end/:gameId', (page, model, params) ->
+baseController.endGame= (page, model, params) ->
 	end = model.get "games.#{params.gameId}.end"
 	if end == false
 		model.set "games.#{params.gameId}.end", true
 		gameName = model.get "games.#{params.gameId}.gameName"
-		model.set "games.#{params.gameId}.gameName", gameName + ': (END)'	
+		model.set "games.#{params.gameId}.gameName", gameName + ': (END)'
 	page.redirect '/'
 
-app.get '/game/:gameId', (page, model, params) ->
-	
+baseController.game= (page, model, params) ->
 	model.subscribe "games.#{params.gameId}",  ->
 		model.set '_page.gameId', params.gameId
 		$players = model.query 'players', {gameId: params.gameId}
-		usersInGame = model.query 'users', "games.#{params.gameId}.userIds"
+		$usersInGame = model.query 'users', "games.#{params.gameId}.userIds"
 		userId = model.get '_session.userId'
 
-		model.subscribe usersInGame, $players,  ->
+		model.subscribe $usersInGame, $players,  ->
 			model.set '_page.gameId', params.gameId
 			model.ref '_page.game', "games.#{params.gameId}"
 
 			unless model.get "games.#{params.gameId}.players.#{userId}"
 				prof = model.get "users.#{userId}.professor" 
-
 				if prof == false
 					model.add "games.#{params.gameId}.players", { id: userId, profit: [], totalProfit: 0  }
 					model.add 'players', {id: userId, gameId: params.gameId, quant:[]}		
 					model.push '_page.game.userIds', userId
 				else
 					model.push '_page.game.userIds', userId
-				
 
 			page.render 'Game'
+
+app.get '/', (page, model) ->  baseController.homePage(page, model)
+app.get '/end/:gameId', (page, model, params) -> baseController.endGame(page, model, params)
+app.get '/game/:gameId', (page, model, params) ->baseController.game(page, model, params)
+	
+	

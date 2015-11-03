@@ -13,6 +13,9 @@ module.exports = class StartGame
 		@model.ref 'users', @model.scope 'users'
 		@model.ref 'playerQ', @model.scope "players.#{@userId}.quant" 
 
+	format= (x) -> ~~(x * 10) / 10
+
+
 	subRound:(players)->
 		@model.set 'game.winner.profit', 0
 		gid = @model.get 'gameId'
@@ -21,8 +24,7 @@ module.exports = class StartGame
 		winnerS = @model.get "game.winner.profit"
 		users = @model.get 'users'
 		playersGame = @model.get 'game.players'
-
-		colPlayers = 2
+		colPlayers = @model.get 'game.colPlayers'
 		profit = 0
 		price = 0
 		n = 0
@@ -40,8 +42,8 @@ module.exports = class StartGame
 			for i of players
 				profit = parseInt(players[i.toString()].quant[parseInt(round)-1]) * (price - parseInt(cost))
 				totalProfit = @model.get "game.players.#{i}.totalProfit"
-				@model.set "game.players.#{i}.totalProfit", (parseInt(totalProfit) + Math.floor(profit))
-				@model.push "game.players.#{i}.profit", Math.floor(profit)
+				@model.set "game.players.#{i}.totalProfit", format(parseInt(totalProfit) + profit)
+				@model.push "game.players.#{i}.profit", format(profit)
 		
 			for i of playersGame
 				if  winnerS == 0
@@ -55,7 +57,7 @@ module.exports = class StartGame
 						profit: playersGame[i.toString()].totalProfit,
 						name: users[i.toString()].userName
 
-			@model.push "game.priceInRound", Math.floor(price)
+			@model.push "game.priceInRound", format(price)
 			@model.set 'game.round', round + 1		
 			return 0
 
