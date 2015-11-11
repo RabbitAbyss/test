@@ -6,27 +6,21 @@ module.exports = class AddGame
 	init: ->
 		@model.ref 'userId', @model.scope '_session.userId'
 		@userId = @model.get 'userId'
-		@model.ref 'game', @model.scope "games.#{@userId}"
 		@model.ref 'games', @model.scope 'games'
 		@model.ref 'players', @model.scope 'players'
 		
 	addNewGame: ->
 		gameName = @model.get 'gameName'
-		
-		if @userId?
-			gameName = gameName.trim()
-		
 		if @userId
-			@model.set "game",
-				gameName:gameName,
+			@model.add 'games',
+				gameName: gameName,
 				players: {},
-				userIds: [],
+				professors: {},
 				costPerRound: 5,
-				maxRounds: 2,
-				colPlayers: 3,
+				maxRounds: 4,
 				round: 0,
-				priceInRound: [],
-				winner: {},
+				colPlayers: 3,
+				started: false,
 				end: false
 			@model.del 'gameName'
 		else

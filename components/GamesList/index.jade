@@ -8,7 +8,6 @@ index:
 					b Games list:
 			each games as #game
 				li 
-					a.Gamelist-link(href='/game/{{#game.id}}') 
-						i{{#game.gameName}}
-				p * * * *
+					a.Gamelist-link(href = '/game/{{#game.id}}')
+						i {{#game.gameName}}
 		i ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

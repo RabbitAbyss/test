@@ -6,10 +6,10 @@ index:
 
 	div.addUser
 		i Username: 
-		input(type='text', value = '{{userName}}')
-		input(type='button', on-click = 'setUserName()' value= 'save')
+		input(type = 'text', value = '{{userName}}')
+		input(type = 'button', on-click = 'setUserName()' value = 'save')
 		br
-		input(type='checkbox', checked = '{{Prof}}', on-change ='Professor()')
+		input(type = 'checkbox', checked = '{{Prof}}', on-change ='Professor()')
 		i professor : {{users[userId].professor}}
-		br
-		input(type= 'button', on-click = 'KillAll()', value= 'Kik users')
+		//br
+		//input(type = 'button', on-click = 'KillAll()', value = 'Kik users')

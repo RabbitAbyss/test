@@ -3,72 +3,77 @@ index:
 		ul
 			i
 				b Players in the game:
-				each game.userIds as #userId
-					if users[#userId].professor == false
-						li 
-							i {{users[#userId].userName}}
+				each Object.keys(game.players) as #userId
+					li 
+						if #userId == userId
+							b
+								i.players-me {{game.players[#userId].name}}
+						else
+							i {{game.players[#userId].name}}
+
 	div.input					
-		if (Object.keys(players).length >= game.colPlayers) && (games[gameId].round == 0)
+		if (Object.keys(game.players).length >= game.colPlayers) && (game.round == 0)
 			input(type='button', on-click = 'startGame()' value= 'START')
-	
-		if 	games[gameId].round > 0
 		
-			if playerQ[(games[gameId].round)-1] == null
-				if (game.round < (game.maxRounds + 1)) && (users[userId].professor == false)
+		if game.round > 0
+			each Object.keys(players) as #player
+				if !players[#player].answer && (players[#player].userId == userId) && (game.round <= game.maxRounds) && (users[userId].professor == false)
 					p 
 						i 
 							b Input You Quantity:
 					input.input-quantIn(type= 'number' value= '{{inQuantity}}')
 					input(type= 'button' on-click= 'addQ()', value= 'add my (Q)')
-				if (game.round == (game.maxRounds + 1))
-					i
-						b
-							a.input-link(href='/end/{{gameId}}') End Game
+			if (game.round == (game.maxRounds + 1))
+				i
+					b
+						a.input-link(href='/end/{{gameId}}') End Game
+	
 		
 			div.table
 				table
-					each game.userIds as #userId
-						if users[#userId].professor == false
+					tbody
+						tr
+							th 
+								i Players Quantity
+						each res.playersIds as #player
 							tr
-								td 
-									i
-										b (Q) {{users[#userId].userName}}:
-								each players[#userId].quant as #Q, #index
+								th
+									i {{res.names[#player]}} (Q):
+								each players[#player].quant as #Q, #index
 									if users[userId].professor == true
 										td 
-											i
-												b{{#Q}}
+											i{{#Q}}
 									if (#index < (game.round)-1) && (users[userId].professor == false)
 										td 
-											i
-												b{{#Q}}
-					tr 
-						td 
-							i
-								b Price:
-						each game.priceInRound as #P
-							td 
-								i
-									b{{#P}}		
-
-					each game.userIds as #userId
-						if users[#userId].professor == false	
-							tr
+											i{{#Q}}
+						tr
+							th 
+								hr
+						tr
+							th 
+								i Price:
+							each res.price as #price
 								td
-									i
-										b (P) {{users[#userId].userName}}:
-								each game.players[#userId].profit as #Profit
-									td {{#Profit}}
-								if game.round  == game.maxRounds + 1
+									i {{#price}}
+						tr
+							th 
+								hr
+						tr
+							th 
+								i Players Profit
+						each res.playersIds as #player
+							tr
+								th
+									i {{res.names[#player]}} (P):
+								each res.profit[#player] as #P
 									td 
-										i
-											b {{game.players[#userId].totalProfit}}
+										i {{#P}}
+								if game.round  == game.maxRounds + 1
+									th 
+										i {{res.totalProfit[#player]}}
+
 
 			if game.round  == game.maxRounds + 1
 				h4 
 					i
-						b!WINNER! {{game.winner.name}}: {{game.winner.profit}} !WINNER!
-
-
-
-			
+						b!WINNER! {{res.winner.name}}: {{res.winner.profit}} !WINNER!
