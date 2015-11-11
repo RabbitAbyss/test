@@ -6,6 +6,9 @@ module.exports = class StartGame
 	init: ->
 		@model.ref 'userId', @model.scope '_session.userId'
 		@userId = @model.get 'userId'
+		
+		@model.ref 'gameId', @model.scope '_page.gameId'
+		@gameId = @model.get 'gameId'
 
 		@model.ref 'players', @model.scope 'players'
 		@model.ref 'game', @model.scope '_page.game'

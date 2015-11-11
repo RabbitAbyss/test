@@ -37,6 +37,6 @@ baseController.endGame = (page, model, params) ->
 		model.set "games.#{params.gameId}.end", true
 		gameName = model.get "games.#{params.gameId}.gameName"
 		model.set "games.#{params.gameId}.gameName", gameName + ': (END)'
-	page.redirect '/'
+		page.redirect '/'
 	
 module.exports = baseController
