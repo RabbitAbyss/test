@@ -1,21 +1,26 @@
+
 module.exports = class StartGame
 
 	view: __dirname
 	style: __dirname
 	
 	init: ->
+		@model.ref 'players', @model.scope 'players'
+		@model.ref 'player', @model.scope '_page.player'
+		@model.ref '_page.games', @model.scope 'games'
+		@model.ref 'game', @model.scope '_page.game'
+		@model.ref 'users', @model.scope 'users'
+
+
 		@model.ref 'userId', @model.scope '_session.userId'
 		@userId = @model.get 'userId'
 		
 		@model.ref 'gameId', @model.scope '_page.gameId'
 		@gameId = @model.get 'gameId'
 
-		@model.ref 'players', @model.scope 'players'
-		@model.ref 'game', @model.scope '_page.game'
-		@model.ref 'users', @model.scope 'users'
-
 		@model.start 'res', 'players', @subRound.bind(@)
 
+		user = @model.get "users.#{@userId}"
 
 	format = (x) -> ~~ (x * 10) / 10
 	
@@ -23,7 +28,7 @@ module.exports = class StartGame
 		@model.set 'game.round', 1
 		@model.set 'game.started', true
 	
-	subRound:(players)->
+	subRound: (players) ->
 
 		maxRounds = @model.get 'game.maxRounds'
 		rounds = @model.get 'game.round'
@@ -32,10 +37,10 @@ module.exports = class StartGame
 
 		colAnswers = null
 		res = {}
-		res.winner = {
-			name: 'none',
+		res.winner = 
+			name: 'none'
 			profit: null
-		}
+
 		res.price = []
 		res.playersIds = []
 		res.names = {}
@@ -44,12 +49,12 @@ module.exports = class StartGame
 
 		for player of players
 			res.playersIds.push(player) 
-			res.names[player] =  @model.get "game.players.#{players[player].userId}.name"
+			res.names[player] =  players[player].name
 			res.totalProfit[player] = null
 			res.profit[player] = []
 
 		#start
-		for round in [0..rounds-1]
+		for round in [0...rounds]
 			if round !=  rounds-1
 			
 				#Price
@@ -68,11 +73,12 @@ module.exports = class StartGame
 					res.totalProfit[player] = format(res.totalProfit[player])
 				console.log res.profit
 
-			#winner
-			for player of players
-				if res.winner.profit < res.totalProfit[player]
-					res.winner.name = @model.get "game.players.#{players[player].userId}.name"
-					res.winner.profit = res.totalProfit[player]
+			if maxRounds is round
+				#winner
+				for player of players
+					if res.winner.profit < res.totalProfit[player]
+						res.winner.name = players[player].name
+						res.winner.profit = res.totalProfit[player]
 
 		#col ansvers?
 		for player of players
@@ -87,15 +93,15 @@ module.exports = class StartGame
 		res
 
 	addQ: ->
-			inQ = @model.get 'inQuantity'
-			if inQ >= 0 and inQ < 76 	
-				players = @model.get 'players'
-				for player of players
-					if @userId is players[player].userId
-						@model.push "players.#{player}.quant", inQ
-						@model.set "players.#{player}.answer", true
-		
-				@model.del 'inQuantity'
-				@model.set 'answer', true
-			else 
-				alert 'Quantity must >= 0 and < 76'
+		inQ = @model.get 'inQuantity'
+		if inQ >= 0 and inQ <= 75 	
+			players = @model.get 'players'
+			for player of players
+				if @userId is players[player].userId
+					@model.push "players.#{player}.quant", inQ
+					@model.set "players.#{player}.answer", true
+	
+			@model.del 'inQuantity'
+			@model.set 'answer', true
+		else 
+			alert 'Quantity must >= 0 and <= 75'

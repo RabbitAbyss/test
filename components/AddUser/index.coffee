@@ -15,16 +15,14 @@ module.exports = class AddUsers
 			@model.set "users.#{@userId}",
 				userName: userName,
 				professor: false,
+				inGame: false
+				inGamePlayerId: "none"
+				inGameId: "none"
+
 			@model.del 'userName'
 		else
 			alert 'Name cannot be empty!'
 
-	Professor: ->
-		Prof = @model.get 'Prof'
-		@model.set "users.#{@userId}.professor", Prof
-
-
-		
-	KillAll: ->
+	kikUsers: ->
 		for key of @model.get 'users'
 			@model.del "users.#{key}"

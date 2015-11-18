@@ -1,79 +1,57 @@
-index: 
-	div.players
+index
+	.players
 		ul
-			i
 				b Players in the game:
-				each Object.keys(game.players) as #userId
+				each res.playersIds as #userId
 					li 
-						if #userId == userId
-							b
-								i.players-me {{game.players[#userId].name}}
+						if players[#userId].userId == userId
+							b.players-me {{players[#userId].name}}
 						else
-							i {{game.players[#userId].name}}
-
-	div.input					
-		if (Object.keys(game.players).length >= game.colPlayers) && (game.round == 0)
+							re {{players[#userId].name}}
+	.input
+		if (res.playersIds.length >= game.colPlayers) && (game.round == 0)
 			input(type='button', on-click = 'startGame()' value= 'START')
 		
 		if game.round > 0
 			each Object.keys(players) as #player
 				if !players[#player].answer && (players[#player].userId == userId) && (game.round <= game.maxRounds) && (users[userId].professor == false)
-					p 
-						i 
-							b Input You Quantity:
+					p: b Input You Quantity:
 					input.input-quantIn(type= 'number' value= '{{inQuantity}}')
 					input(type= 'button' on-click= 'addQ()', value= 'add my (Q)')
+			
 			if (game.round == (game.maxRounds + 1))
-				i
-					b
-						a.input-link(href='/end/{{gameId}}') End Game
-	
-		
-			div.table
+				b: a.input-link(href='/end/{{gameId}}') End Game
+			.table
 				table
 					tbody
 						tr
-							th 
-								i Players Quantity
+							th Players Quantity
 						each res.playersIds as #player
 							tr
-								th
-									i {{res.names[#player]}} (Q):
+								th {{res.names[#player]}} (Q):
 								each players[#player].quant as #Q, #index
 									if users[userId].professor == true
-										td 
-											i{{#Q}}
+										td {{#Q}}
 									if (#index < (game.round)-1) && (users[userId].professor == false)
-										td 
-											i{{#Q}}
+										td {{#Q}}
 						tr
 							th 
 								hr
 						tr
-							th 
-								i Price:
+							th Price:
 							each res.price as #price
-								td
-									i {{#price}}
+								td {{#price}}
 						tr
 							th 
 								hr
 						tr
-							th 
-								i Players Profit
+							th Players Profit
 						each res.playersIds as #player
 							tr
-								th
-									i {{res.names[#player]}} (P):
+								th {{res.names[#player]}} (P):
 								each res.profit[#player] as #P
-									td 
-										i {{#P}}
+									td {{#P}}
 								if game.round  == game.maxRounds + 1
-									th 
-										i {{res.totalProfit[#player]}}
-
-
+									th {{res.totalProfit[#player]}}
 			if game.round  == game.maxRounds + 1
-				h4 
-					i
-						b!WINNER! {{res.winner.name}}: {{res.winner.profit}} !WINNER!
+				h4 !WINNER! {{res.winner.name}}: {{res.winner.profit}} !WINNER!

@@ -13,14 +13,14 @@ module.exports = class AddGame
 		gameName = @model.get 'gameName'
 		if @userId
 			@model.add 'games',
-				gameName: gameName,
-				players: {},
-				professors: {},
-				costPerRound: 5,
-				maxRounds: 4,
-				round: 0,
-				colPlayers: 3,
-				started: false,
+				gameName: gameName
+				professors: {}
+				players:[]
+				costPerRound: 5
+				maxRounds: 4
+				round: 0
+				colPlayers: 3
+				started: false
 				end: false
 			@model.del 'gameName'
 		else

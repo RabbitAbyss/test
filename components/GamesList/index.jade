@@ -1,13 +1,14 @@
-index:
-
-	div.Gamelist
-		i ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+index
+	.Gamelist
+		re ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		ul.Gamelist-list
-			p
-				i
-					b Games list:
+			p: b Games list:
 			each games as #game
-				li 
-					a.Gamelist-link(href = '/game/{{#game.id}}')
-						i {{#game.gameName}}
-		i ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				if (#game.players.length < #game.colPlayers) && (users[userId].inGame == false)
+					li: a.Gamelist-link-noFull(href = '/game/{{#game.id}}') {{#game.gameName}}
+				if ((#game.players.length == #game.colPlayers) && (users[userId].professor == true) && (#game.end == false)) || ((users[userId].inGame == true) && (#game.id == users[userId].inGameId)) 
+					li: a.Gamelist-link-started(href = '/game/{{#game.id}}') {{#game.gameName}}
+				if #game.end == true 
+					li: a.Gamelist-link-ended(href = '/game/{{#game.id}}') {{#game.gameName}}
+				
+		re ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

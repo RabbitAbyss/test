@@ -1,15 +1,14 @@
-index:
+index
+	.hello 
+		h2 Welcome {{users[userId].userName}}
 
-	.hello
-		i 
-			b Welcome {{users[userId].userName}}
-
-	div.addUser
-		i Username: 
-		input(type = 'text', value = '{{userName}}')
-		input(type = 'button', on-click = 'setUserName()' value = 'save')
+	.addUser
+		re Username: 
+		input(type='text' value='{{ userName }}')
+		input(type='button' on-click='setUserName()' value='save')
 		br
-		input(type = 'checkbox', checked = '{{Prof}}', on-change ='Professor()')
-		i professor : {{users[userId].professor}}
-		//br
-		//input(type = 'button', on-click = 'KillAll()', value = 'Kik users')
+		input(type='checkbox' checked='{{ users[userId].professor }}')
+		re professor : {{ users[userId].professor }}
+		
+		br
+		input(type = 'button', on-click = 'kikUsers()', value = 'Kik users')
