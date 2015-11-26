@@ -5,10 +5,10 @@ index
 			p: b Games list:
 			each games as #game
 				if (#game.players.length < #game.colPlayers) && (users[userId].inGame == false)
-					li: a.Gamelist-link-noFull(href = '/game/{{#game.id}}') {{#game.gameName}}
+					li: a.Gamelist-link-noFull(href = '/game/{{#game.id}}') {{#game.gameName}} ~ {{ #game.players.length }}/{{ #game.colPlayers }}
 				if ((#game.players.length == #game.colPlayers) && (users[userId].professor == true) && (#game.end == false)) || ((users[userId].inGame == true) && (#game.id == users[userId].inGameId)) 
-					li: a.Gamelist-link-started(href = '/game/{{#game.id}}') {{#game.gameName}}
+					li: a.Gamelist-link-started(href = '/game/{{#game.id}}') {{#game.gameName}} ~ {{ #game.players.length }}/{{ #game.colPlayers }}
 				if #game.end == true 
-					li: a.Gamelist-link-ended(href = '/game/{{#game.id}}') {{#game.gameName}}
+					li: a.Gamelist-link-ended(href = '/game/{{#game.id}}') {{#game.gameName}} ~ {{ #game.players.length }}/{{ #game.colPlayers }}
 				
 		re ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -11,6 +11,12 @@ index
 	.input
 		if (res.playersIds.length >= game.colPlayers) && (game.round == 0)
 			input(type='button', on-click = 'startGame()' value= 'START')
+
+		if (game.started == false) && (users[userId].professor == false)
+			each res.playersIds as #userId
+				if players[#userId].userId == userId
+					br
+					b: a.input-link(href='/leave/{{ gameId }}/{{ players[#userId].id }}') ~ Leave the game ... ~
 		
 		if game.round > 0
 			each Object.keys(players) as #player
@@ -20,7 +26,7 @@ index
 					input(type= 'button' on-click= 'addQ()', value= 'add my (Q)')
 			
 			if (game.round == (game.maxRounds + 1))
-				b: a.input-link(href='/end/{{gameId}}') End Game
+				b: a.input-link(href='/end/{{gameId}}') |End Game|
 			.table
 				table
 					tbody
@@ -54,4 +60,8 @@ index
 								if game.round  == game.maxRounds + 1
 									th {{res.totalProfit[#player]}}
 			if game.round  == game.maxRounds + 1
-				h4 !WINNER! {{res.winner.name}}: {{res.winner.profit}} !WINNER!
+				h4 !WINNER! {{res.names[res.winnerId]}}: {{res.totalProfit[res.winnerId]}} !WINNER!
+		
+
+
+

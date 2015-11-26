@@ -37,10 +37,9 @@ module.exports = class StartGame
 
 		colAnswers = null
 		res = {}
-		res.winner = 
-			name: 'none'
-			profit: null
+		res.winner = 'none'
 
+		profit = 0
 		res.price = []
 		res.playersIds = []
 		res.names = {}
@@ -76,10 +75,9 @@ module.exports = class StartGame
 			if maxRounds is round
 				#winner
 				for player of players
-					if res.winner.profit < res.totalProfit[player]
-						res.winner.name = players[player].name
-						res.winner.profit = res.totalProfit[player]
-
+					if profit < res.totalProfit[player]
+							res.winnerId = player
+							profit = res.totalProfit[player]
 		#col ansvers?
 		for player of players
 			if players[player].answer is true

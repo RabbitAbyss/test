@@ -2,7 +2,7 @@
 baseController = {}
 baseController.homePage = (page, model) ->
 	userId = model.get '_session.userId'
-	model.subscribe 'games',"users.#{userId}", -> #"users.#{userId}"
+	model.subscribe 'games',"users.#{userId}", ->
 		model.at('games').filter().ref '_page.games'
 		user = model.get "users.#{userId}"
 		page.render 'MainPage'
@@ -42,6 +42,25 @@ baseController.game = (page, model, params) ->
 					return
 			
 			page.render 'Game'
+#
+baseController.leaveGame = (page, model, params) ->
+	userId = model.get '_session.userId'
+	model.subscribe 'players', 'games', "users.#{userId}", ->
+		model.del "players.#{params.playerId}"
+		user = model.get "users.#{userId}"
+		playersInGame = model.get "games.#{params.gameId}.players"
+		
+		for i in [0..playersInGame.length]
+			if playersInGame[i] is userId
+				playersInGame.splice(i)
+				model.set "games.#{params.gameId}.players", playersInGame
+		
+		if user.inGame and (user.inGameId == params.gameId) 
+			model.set "users.#{userId}.inGame", false
+			model.set "users.#{userId}.inGameId", "none"
+			model.set "users.#{userId}.inGamePlayerId", "none"
+		
+		page.redirect '/'
 
 baseController.endGame = (page, model, params) ->
 	userId = model.get '_session.userId'

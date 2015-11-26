@@ -25,5 +25,8 @@ app.get '/', (page, model) ->
 app.get '/end/:gameId', (page, model, params) ->
 	base.endGame(page, model, params)
 
+app.get '/leave/:gameId/:playerId', (page, model, params) ->
+	base.leaveGame(page, model, params)
+
 app.get '/game/:gameId', (page, model, params) ->
 	base.game(page, model, params)
